@@ -20,19 +20,22 @@ func main() {
 
 	project := NewProject()
 
-	project.Location  = flag.String("d", "", "Project location on disk")
-	project.Name  = flag.String("n", "", "Project name")
-	project.URL  = flag.String("r", "", "Project remote repo URL")
-	project.Type = flag.Bool("s", false, "Project will have static assets or not")
+	projectCommand := flag.NewFlagSet("", flag.ExitOnError)
 
-	flag.Parse()
+	project.Location  = projectCommand.String("d", "", "Project location on disk")
+	project.Name  = projectCommand.String("n", "", "Project name")
+	project.URL  = projectCommand.String("r", "", "Project remote repo URL")
+	project.Type = projectCommand.Bool("s", false, "Project will have static assets or not")
 
-	fmt.Fprintf(os.Stdout,"Project location: %s \n", *project.Location)
-	fmt.Fprintf(os.Stdout,"Project name: %s \n", *project.Name)
-	fmt.Fprintf(os.Stdout,"Project type: %t \n", *project.Type)
-	fmt.Fprintf(os.Stdout,"Remote repo: %s \n", *project.URL)
+	projectCommand.Parse(os.Args[1:])
+
+	if projectCommand.Parsed() {
+		if *project.Location == "" ||  *project.Name == "" || *project.URL == ""{
+			projectCommand.PrintDefaults()
+			os.Exit(1)
+		}
+	}
+
 	fmt.Fprintf(os.Stdout,"Generating scaffold for project %s in %s \n", *project.Name, *project.Location)
-
-
 }
 
