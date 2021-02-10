@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/../../../../../../../../../../:\Users\Aura\Documents\CodeReview\LiveProjects\Web Application Scaffold Generator in Go\source\CLI\.idea/dataSources/
+/dataSources.local.xml
+/main.exe
+# Editor-based HTTP Client requests
+/httpRequests/

@@ -1,47 +1,27 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 )
 
-type Project struct {
-	Name     *string
-	Location *string
-	URL      *string
-	Type     *bool
-}
-
-func NewProject() *Project {
-	return &Project{}
-}
-
 func main() {
+	var p Project
 
-	project := NewProject()
+	project, err := p.NewProject(os.Args[1:])
 
-	projectCommand := flag.NewFlagSet("", flag.ExitOnError)
+	if err != nil {
+		os.Exit(1)
+	}
 
-	project.Location = projectCommand.String("d", "", "Project location on disk")
-	project.Name = projectCommand.String("n", "", "Project name")
-	project.URL = projectCommand.String("r", "", "Project remote repo URL")
-	project.Type = projectCommand.Bool("s", false, "Project will have static assets or not")
+	errors := project.validateSettings()
 
-	projectCommand.Parse(os.Args[1:])
-
-	if projectCommand.Parsed() {
-		if *project.Name == "" {
-			fmt.Fprintf(os.Stdout, "Project name cannot be empty\n")
-		}
-		if *project.Location == "" {
-			fmt.Fprintf(os.Stdout, "Project path cannot be empty\n")
-		}
-		if *project.URL == "" {
-			fmt.Fprintf(os.Stdout, "Project repository URL cannot be empty\n")
+	if len(errors) > 0 {
+		for _, e := range errors {
+			fmt.Println(e)
 		}
 		os.Exit(1)
 	}
-	
-	fmt.Fprintf(os.Stdout, "Generating scaffold for project %s in %s \n", *project.Name, *project.Location)
+
+	fmt.Fprintf(os.Stdout, "Generating scaffold for project %s in %s \n", project.Name, project.Location)
 }
