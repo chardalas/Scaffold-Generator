@@ -8,7 +8,7 @@ import (
 func main() {
 	var p Project
 
-	project, err := p.NewProject(os.Args[1:])
+	project, err := p.newProject(os.Args[1:])
 
 	if err != nil {
 		os.Exit(1)
@@ -18,7 +18,7 @@ func main() {
 
 	if len(errors) > 0 {
 		for _, e := range errors {
-			fmt.Println(e)
+			fmt.Fprint(os.Stdout, e)
 		}
 		os.Exit(1)
 	}

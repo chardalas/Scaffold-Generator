@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 )
 
@@ -11,7 +12,7 @@ type Project struct {
 	Type     bool
 }
 
-func (p *Project) NewProject(args []string) (*Project, error) {
+func (p *Project) newProject(args []string) (Project, error) {
 
 	projectCommand := flag.NewFlagSet("", flag.ContinueOnError)
 
@@ -23,25 +24,25 @@ func (p *Project) NewProject(args []string) (*Project, error) {
 	err := projectCommand.Parse(args)
 
 	if err != nil {
-		return nil, err
+		return Project{}, err
 	}
 
-	return p, nil
+	return *p, nil
 }
 
-func (p *Project) validateSettings() []string {
+func (p *Project) validateSettings() []error {
 
-	var errors []string
+	var errs []error
 
 	if p.Name == "" {
-		errors = append(errors, "Project name cannot be empty\n")
+		errs = append(errs, errors.New("Project name cannot be empty"))
 	}
 	if p.Location == "" {
-		errors = append(errors, "Project path cannot be empty\n")
+		errs = append(errs, errors.New("Project path cannot be empty"))
 	}
 	if p.URL == "" {
-		errors = append(errors, "Project repository URL cannot be empty\n")
+		errs = append(errs, errors.New("Project repository URL cannot be empty"))
 	}
 
-	return errors
+	return errs
 }
