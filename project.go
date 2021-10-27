@@ -35,13 +35,13 @@ func (p *Project) validateSettings() []error {
 	var errs []error
 
 	if p.Name == "" {
-		errs = append(errs, errors.New("Project name cannot be empty"))
+		errs = append(errs, errors.New("Project name cannot be empty."))
 	}
 	if p.Location == "" {
-		errs = append(errs, errors.New("Project path cannot be empty"))
+		errs = append(errs, errors.New("Project path cannot be empty."))
 	}
 	if p.URL == "" {
-		errs = append(errs, errors.New("Project repository URL cannot be empty"))
+		errs = append(errs, errors.New("Project repository URL cannot be empty."))
 	}
 
 	return errs
