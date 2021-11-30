@@ -44,5 +44,5 @@ func (p *Project) validateSettings() []error {
 		errs = append(errs, errors.New("Project repository URL cannot be empty."))
 	}
 
-	return errs
+	return errs // haha		
 }
